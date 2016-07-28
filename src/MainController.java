@@ -1,4 +1,3 @@
-import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.TextArea;
@@ -25,42 +24,51 @@ public class MainController implements Initializable{
         ta_lyrics.setEditable(false);
     }
 
+    /**
+     * Clean button method
+     */
     public void clean() {
         tf_title.setText("");
         tf_artist.setText("");
     }
 
+    /**
+     * Download lyrics from metrolyrics, edit them and print them to textarea
+     */
     public void search() {
+        String base = "";
         try {
-            String base = "http://www.directlyrics.com/";
+            // Prepare the URL link
+            base = "http://www.metrolyrics.com/";
             String title = tf_title.getText(); title = title.trim(); title = title.replaceAll(" ", "-");
             String artist = tf_artist.getText(); artist = artist.trim(); artist = artist.replaceAll(" ", "-");
-            base += artist + "-" + title + "-lyrics.html";
+            base += title + "-lyrics-" + artist + ".html";
             System.out.println(base);
 
+            // Connect to metrolyrics and download the lyrics
             Document doc = Jsoup.connect(base).get();
-            Elements d = doc.getElementsByAttributeValue("class", "lyrics lyricsselect");
+            Elements d = doc.getElementsByAttributeValue("id", "lyrics-body-text");
             String lyrics = d.toString();
+            System.out.println(lyrics);
 
-            int firstP = lyrics.indexOf("<p>");
-            int secondP = lyrics.indexOf("</p");
-            lyrics = lyrics.substring(firstP + 3, secondP);
-            lyrics = lyrics.replace("<br>", "\n");
-            while(true) {
-                firstP = lyrics.indexOf("<ins");
-                secondP = lyrics.indexOf("</script>");
-                if (firstP == -1 || secondP == -1)
-                    break;
-                String lyricsFirstPart = lyrics.substring(0, firstP);
-                String lyricsLastPart = lyrics.substring(secondP+9);
-                lyrics = lyricsFirstPart+lyricsLastPart;
-            }
+            // Format them -> remove unnecessary attributes
+            lyrics = lyrics.replaceAll("<p class=\"verse\">", "");
+            lyrics = lyrics.replaceAll("</p>", "\n");
+            lyrics = lyrics.replaceAll("<br>", "\n");
+            lyrics = lyrics.replaceAll("<div id=\"lyrics-body-text\" class=\"js-lyric-text\">", "");
+            lyrics = lyrics.replaceAll("</div>", "");
 
-
+            // Print the lyrics
             ta_lyrics.setText(lyrics);
         }
         catch(Exception e) {
             e.printStackTrace();
+            ta_lyrics.setText("We couldn't connect to metrolyrics :/." +
+                    "\nCheck if you entered the right information." +
+                    "\nAlso try removing words like 'the' (The Script->Script)" +
+                    "\nIt might just be that metrolyrics doesn't have the lyrics" +
+                    "\nURL we extracted: \"" + base + "\""
+            );
         }
     }
 }
