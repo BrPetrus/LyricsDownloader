@@ -2,10 +2,13 @@ import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
+import javafx.stage.FileChooser;
+import javafx.stage.Stage;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.select.Elements;
 
+import java.io.*;
 import java.net.URL;
 import java.util.ResourceBundle;
 
@@ -19,9 +22,13 @@ public class MainController implements Initializable{
     private TextField tf_artist;
     @FXML
     private TextArea ta_lyrics;
+    private Stage myStage;
 
     public void initialize(URL location, ResourceBundle resources) {
         ta_lyrics.setEditable(false);
+    }
+    public void init(Stage myStage) {
+        this.myStage = myStage;
     }
 
     /**
@@ -69,6 +76,26 @@ public class MainController implements Initializable{
                     "\nIt might just be that metrolyrics doesn't have the lyrics" +
                     "\nURL we extracted: \"" + base + "\""
             );
+        }
+    }
+
+    public void downloadLyrics() {
+        FileChooser fileChooser = new FileChooser();
+        fileChooser.setTitle("Save Lyrics");
+        fileChooser.getExtensionFilters().addAll(
+                new FileChooser.ExtensionFilter("Text Files", "*.txt"),
+                new FileChooser.ExtensionFilter("All Files", "*.*")
+        );
+        File file = fileChooser.showSaveDialog(myStage);
+        if (file != null) {
+            try {
+                PrintWriter out = new PrintWriter(new BufferedWriter(new FileWriter(file)));
+                out.print(ta_lyrics.getText().replaceAll("\n", "\r\n"));
+                out.close();
+            }
+            catch(IOException e) {
+                e.printStackTrace();
+            }
         }
     }
 }

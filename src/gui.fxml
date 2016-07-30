@@ -19,7 +19,8 @@
             <Button fx:id="b_search" mnemonicParsing="false" onAction="#search" text="Search" />
         </buttons>
       </ButtonBar>
-      <Label layoutX="175.0" layoutY="136.0" prefHeight="17.0" prefWidth="50.0" text="LYRICS" />
-      <TextArea fx:id="ta_lyrics" layoutY="176.0" prefHeight="626.0" prefWidth="400.0" />
+      <Label layoutX="175.0" layoutY="131.0" prefHeight="17.0" prefWidth="50.0" text="LYRICS" />
+      <TextArea fx:id="ta_lyrics" layoutY="148.0" prefHeight="613.0" prefWidth="400.0" />
+      <Button layoutX="149.0" layoutY="767.0" mnemonicParsing="false" onAction="#downloadLyrics" text="Download Lyrics" />
    </children>
 </AnchorPane>

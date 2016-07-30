@@ -13,10 +13,13 @@ public class LyricsDownloader extends Application{
      */
     public void start(Stage primaryStage) throws Exception{
         // Set up the root node and scene
-        Parent root = FXMLLoader.load(getClass().getResource("gui.fxml"));
-        Scene myScene = new Scene(root, 400, 800);
+        FXMLLoader loader = new FXMLLoader(getClass().getResource("gui.fxml"));
+        Parent root = loader.load();
+        MainController controller = (MainController) loader.getController();
+        controller.init(primaryStage);
 
-        // Load css
+        // Create scene and load css
+        Scene myScene = new Scene(root, 400, 800);
         myScene.getStylesheets().add("gui.css");
 
         // Show the scene, set title ...
