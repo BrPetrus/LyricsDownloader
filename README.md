@@ -1,2 +1,2 @@
 # LyricsDownloader
-Downloads lyrics from http://www.directlyrics.com
+Downloads lyrics from http://www.metrolyrics.com/
