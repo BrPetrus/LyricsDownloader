@@ -49,7 +49,7 @@ public class MainController implements Initializable{
             base = "http://www.metrolyrics.com/";
             String title = tf_title.getText(); title = title.trim(); title = title.replaceAll(" ", "-");
             String artist = tf_artist.getText(); artist = artist.trim(); artist = artist.replaceAll(" ", "-");
-            base += title + "-lyrics-" + artist + ".html";
+            base += artist + "-lyrics-" + title + ".html";
             System.out.println(base);
 
             // Connect to metrolyrics and download the lyrics
